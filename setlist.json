@@ -1,0 +1,14 @@
+[
+  {
+    "id": "000",
+    "name": "Soul Banana",
+    "artist": "Jive Bunny",
+    "working": false
+  },
+  {
+    "id": "001",
+    "name": "Johny B. Good",
+    "artist": "Chuck Berry",
+    "working": false
+  }
+]
