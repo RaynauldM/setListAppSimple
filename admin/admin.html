@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SetlistAppSimple Admin page</title>
+    <script dever type="module" src="admin.js"></script>
+  </head>
+  <body>
+    <header>
+      <h1>dit is de admin page</h1>
+    </header>
+    <div id="btnPlacement">
+      <button id="addBtn">Add</button>
+      <button id="deleteBtn">Delete</button>
+      <button id="updateBtn">Update</button>
+    </div>
+    <main>
+      <h2>
+        Druk op een knop om veranderingen te brengen aan de volledige setlist
+        (pas op, kier kan niet meer van teruggekomen worden)
+      </h2>
+    </main>
+    <a href="../index.html">
+      <button id="backBtn">terug</button>
+    </a>
+    <style>
+      main {
+        display: flex;
+        flex-direction: column;
+      }
+      #backBtn {
+        background-color: red;
+      }
+    </style>
+  </body>
+</html>

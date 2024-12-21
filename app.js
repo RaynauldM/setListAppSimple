@@ -7,7 +7,6 @@ for (const child of btns) {
   child.className = "btns";
   child.addEventListener("click", handleClick);
 }
-console.log(btns);
 
 function fetchJSONData() {
   return fetch("./setlist.json")

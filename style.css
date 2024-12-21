@@ -3,3 +3,7 @@
   height: 12em;
   width: 10em;
 }
+
+#adminBtn {
+  background-color: red;
+}
