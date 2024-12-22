@@ -1,25 +1,11 @@
 const sUl = document.getElementById("setListUl");
 const btnPlacement = document.getElementById("btnPlacement");
-
+import { fetchJSONData } from "./fetch.js";
 //button handling
 const btns = btnPlacement.children;
 for (const child of btns) {
   child.className = "btns";
   child.addEventListener("click", handleClick);
-}
-
-function fetchJSONData() {
-  return fetch("./setlist.json")
-    .then((res) => {
-      if (!res.ok) {
-        throw new Error(`HTTP error! Status: ${res.status}`);
-      }
-      return res.json(); // Retourneer de JSON-data
-    })
-    .catch((error) => {
-      console.error("Unable to fetch data:", error);
-      throw error; // Gooi de fout opnieuw als je deze elders wilt afhandelen
-    });
 }
 
 function showAllSongs() {
@@ -45,5 +31,3 @@ function handleClick(event) {
       break;
   }
 }
-
-// fetchJSONData()

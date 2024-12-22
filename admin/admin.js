@@ -1,9 +1,12 @@
+import { fetchJSONData } from "../fetch.js";
+
 const btnPlacement = document.getElementById("btnPlacement");
 const mainScreen = document.querySelector("main");
 let btns = btnPlacement.children;
 
 for (let btn of btns) {
   btn.addEventListener("click", handleClick);
+  btn.className = "btns";
 }
 
 function clearScreen() {
@@ -16,6 +19,7 @@ function addSongPage() {
   let songInput = document.createElement("input");
   let artistLabel = document.createElement("label");
   let artistInput = document.createElement("input");
+  let sendBtn = document.createElement("button");
   songLabel.for = "song";
   songLabel.textContent = "Song: ";
   songInput.type = "text";
@@ -31,8 +35,19 @@ function addSongPage() {
   artistInput.id = "artistInput";
   artistInput.name = "artist";
   artistInput.maxLength = "32";
+
+  sendBtn.innerText = "add song";
+  sendBtn.id = "sendBtn";
+  sendBtn.addEventListener("click", sendSong);
+  sendBtn.className = "btns";
   mainScreen.append(artistLabel);
   mainScreen.append(artistInput);
+  mainScreen.append(sendBtn);
+  function sendSong() {
+    let newSong = songInput.value;
+    let newArtist = artistInput.value;
+    console.log("nummer: ", newSong, "\n artiest: ", newArtist);
+  }
 }
 
 function handleClick(event) {
