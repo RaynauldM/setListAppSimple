@@ -46,3 +46,39 @@ export function showAllSongs(container) {
       console.log("foutje", error);
     });
 }
+
+export function deleteSong(id) {
+  return fetch(`http://localhost:3000/deleteSong/${id}`, {
+    method: "DELETE",
+  })
+    .then((res) => {
+      if (!res.ok) {
+        throw new Error(`HTTP error! Status: ${res.status}`);
+      }
+      return res.json();
+    })
+    .catch((error) => {
+      console.error("Unable to delete song:", error);
+      throw error;
+    });
+}
+
+export function updateSong(id, updatedName, updatedArtist) {
+  return fetch(`http://localhost:3000/updateSong/${id}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ name: updatedName, artist: updatedArtist }),
+  })
+    .then((res) => {
+      if (!res.ok) {
+        throw new Error(`HTTP error! Status: ${res.status}`);
+      }
+      return res.json();
+    })
+    .catch((error) => {
+      console.error("Unable to update song:", error);
+      throw error;
+    });
+}

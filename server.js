@@ -59,6 +59,69 @@ app.post("/addSong", (req, res) => {
   });
 });
 
+app.delete("/deleteSong/:id", (req, res) => {
+  const songId = req.params.id;
+
+  // Lees het bestaande JSON-bestand
+  fs.readFile(jsonFilePath, "utf8", (err, data) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).json({ error: "Failed to read JSON file." });
+    }
+
+    let songs = JSON.parse(data);
+
+    // Filter de nummers om het opgegeven ID te verwijderen
+    const updatedSongs = songs.filter((song) => song.id !== songId);
+
+    // Schrijf de bijgewerkte lijst terug naar het JSON-bestand
+    fs.writeFile(jsonFilePath, JSON.stringify(updatedSongs, null, 2), (err) => {
+      if (err) {
+        console.error(err);
+        return res.status(500).json({ error: "Failed to write JSON file." });
+      }
+
+      res.status(200).json({ message: "Song deleted successfully." });
+    });
+  });
+});
+
+app.put("/updateSong/:id", (req, res) => {
+  const songId = req.params.id;
+  const { name, artist } = req.body;
+
+  if (!name || !artist) {
+    return res.status(400).json({ error: "Name and artist are required." });
+  }
+
+  fs.readFile(jsonFilePath, "utf8", (err, data) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).json({ error: "Failed to read JSON file." });
+    }
+
+    let songs = JSON.parse(data);
+
+    const songIndex = songs.findIndex((song) => song.id === songId);
+    if (songIndex === -1) {
+      return res.status(404).json({ error: "Song not found." });
+    }
+
+    // Update de song
+    songs[songIndex].name = name;
+    songs[songIndex].artist = artist;
+
+    fs.writeFile(jsonFilePath, JSON.stringify(songs, null, 2), (err) => {
+      if (err) {
+        console.error(err);
+        return res.status(500).json({ error: "Failed to write JSON file." });
+      }
+
+      res.status(200).json({ message: "Song updated successfully." });
+    });
+  });
+});
+
 // Start de server
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
