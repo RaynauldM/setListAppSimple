@@ -1,4 +1,4 @@
-import { fetchJSONData, addSong } from "../fetch.js";
+import { showAllSongs, addSong } from "./fetch.js";
 
 const btnPlacement = document.getElementById("btnPlacement");
 const mainScreen = document.querySelector("main");
@@ -38,6 +38,7 @@ function addSongPage() {
 
   sendBtn.innerText = "add song";
   sendBtn.id = "sendBtn";
+
   sendBtn.addEventListener("click", sendSong);
   sendBtn.className = "btns";
   mainScreen.append(artistLabel);
@@ -53,11 +54,21 @@ function addSongPage() {
   }
 }
 
+function deleteSongPage() {
+  clearScreen();
+  let newUl = document.createElement("ul");
+  mainScreen.append(newUl);
+  showAllSongs(newUl);
+}
+
 function handleClick(event) {
   let btnId = event.target.id;
   switch (btnId) {
     case "addBtn":
       addSongPage();
+      break;
+    case "deleteBtn":
+      deleteSongPage();
       break;
   }
 }

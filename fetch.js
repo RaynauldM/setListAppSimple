@@ -31,3 +31,18 @@ export function addSong(name, artist) {
       throw error;
     });
 }
+
+export function showAllSongs(container) {
+  fetchJSONData()
+    .then((data) => {
+      container.innerHTML = "";
+      for (const song of data) {
+        let newLi = document.createElement("li");
+        newLi.innerHTML = song.name;
+        container.append(newLi);
+      }
+    })
+    .catch((error) => {
+      console.log("foutje", error);
+    });
+}
