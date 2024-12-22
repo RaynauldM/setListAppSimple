@@ -1,4 +1,4 @@
-import { fetchJSONData } from "../fetch.js";
+import { fetchJSONData, addSong } from "../fetch.js";
 
 const btnPlacement = document.getElementById("btnPlacement");
 const mainScreen = document.querySelector("main");
@@ -46,7 +46,10 @@ function addSongPage() {
   function sendSong() {
     let newSong = songInput.value;
     let newArtist = artistInput.value;
-    console.log("nummer: ", newSong, "\n artiest: ", newArtist);
+    addSong(newSong, newArtist)
+      .then((res) => console.log("toegevoegd: ", res))
+      .catch((err) => console.log("error: ", err));
+    addSongPage();
   }
 }
 
