@@ -38,6 +38,8 @@ export function showAllSongs(container) {
       container.innerHTML = "";
       for (const song of data) {
         let newLi = document.createElement("li");
+        newLi.draggable = true;
+        newLi.className = "songs";
         newLi.innerHTML = song.name;
         container.append(newLi);
       }

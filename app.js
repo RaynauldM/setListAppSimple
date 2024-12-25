@@ -16,3 +16,8 @@ function handleClick(event) {
       break;
   }
 }
+
+new Sortable(setListUl, {
+  animation: 150,
+  ghostClass: "sortable-ghost",
+});
