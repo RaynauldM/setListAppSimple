@@ -18,7 +18,7 @@ for (let btn of btns) {
 }
 
 function clearScreen() {
-  mainScreen.innerHTML = "";
+  mainScreen.innerHTML = "<ul id=setListUl></ul>";
 }
 
 function addSongPage() {
