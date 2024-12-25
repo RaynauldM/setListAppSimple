@@ -6,6 +6,8 @@ import {
   updateSong,
 } from "./fetch.js";
 
+import { setList } from "./app.js";
+
 const btnPlacement = document.getElementById("btnPlacement");
 const mainScreen = document.querySelector("main");
 let btns = btnPlacement.children;
@@ -65,7 +67,7 @@ function deleteSongPage() {
   let newUl = document.createElement("ul");
   mainScreen.append(newUl);
 
-  fetchJSONData()
+  fetchJSONData(setList)
     .then((data) => {
       newUl.innerHTML = "";
       for (const song of data) {
@@ -104,7 +106,7 @@ function updateSongPage() {
 }
 
 function showAllSongsWithEdit(container) {
-  fetchJSONData()
+  fetchJSONData(setList)
     .then((data) => {
       container.innerHTML = "";
       for (const song of data) {

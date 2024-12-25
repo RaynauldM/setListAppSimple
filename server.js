@@ -9,7 +9,7 @@ const PORT = 3000;
 app.use(cors());
 
 // Pad naar het JSON-bestand
-const jsonFilePath = path.join(__dirname, "setlist.json");
+const jsonFilePath = "./json/setlist.json";
 
 // Middleware om JSON-gegevens te verwerken
 app.use(express.json());

@@ -1,5 +1,5 @@
-export function fetchJSONData() {
-  return fetch("./setlist.json")
+export function fetchJSONData(xSetlist) {
+  return fetch(xSetlist)
     .then((res) => {
       if (!res.ok) {
         throw new Error(`HTTP error! Status: ${res.status}`);
@@ -33,7 +33,7 @@ export function addSong(name, artist) {
 }
 
 export function showAllSongs(container) {
-  fetchJSONData()
+  fetchJSONData("./json/setlist.json")
     .then((data) => {
       container.innerHTML = "";
       for (const song of data) {

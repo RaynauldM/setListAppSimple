@@ -1,5 +1,11 @@
 const sUl = document.getElementById("setListUl");
 const btnPlacement = document.getElementById("btnPlacement");
+
+// globals
+
+const setList = "./json/setlist.json";
+const workingList = "/json/workingsetlist.json";
+
 import { showAllSongs } from "./fetch.js";
 //button handling
 const btns = btnPlacement.children;
@@ -17,7 +23,4 @@ function handleClick(event) {
   }
 }
 
-new Sortable(setListUl, {
-  animation: 150,
-  ghostClass: "sortable-ghost",
-});
+export { setList, workingList };
