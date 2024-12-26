@@ -18,17 +18,10 @@ main {
   border: solid green 2px;
 }
 
-#setListUl {
-  list-style: none;
-  display: flex;
-  flex-direction: column;
-}
-
 #adminBtn {
   background-color: red;
 }
 
-#listContainer {
+#setlistContainer {
   display: flex;
-  justify-content: space-evenly;
 }

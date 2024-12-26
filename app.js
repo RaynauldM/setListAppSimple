@@ -1,7 +1,6 @@
 const main = document.getElementById("main");
 const btnPlacement = document.getElementById("btnPlacement");
 import { showAllSongs, showSongs } from "./fetch.js";
-// globals
 
 const setList = "./json/setlist.json";
 const workingList = "/json/workingsetlist.json";
@@ -14,7 +13,25 @@ for (const child of btns) {
 }
 
 function changeSetlist() {
-  console.log("yo");
+  let setlistContainer = document.createElement("div");
+  let fullSetlist = document.createElement("ul");
+  let setList = document.createElement("ul");
+  setlistContainer.id = "setlistContainer";
+  fullSetlist.id = "fullSetlist";
+  setList.id = "setList";
+  Sortable.create(fullSetlist, {
+    group: "changeSetlist",
+  });
+  Sortable.create(setList, {
+    group: "changeSetlist",
+  });
+
+  main.innerHTML = "";
+  showAllSongs(fullSetlist);
+  showSongs(setList);
+  setlistContainer.append(fullSetlist);
+  setlistContainer.append(setList);
+  main.append(setlistContainer);
 }
 
 function showSetList() {
