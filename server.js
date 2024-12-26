@@ -122,6 +122,46 @@ app.put("/updateSong/:id", (req, res) => {
   });
 });
 
+// Pad naar het JSON-bestand
+const setListsPath = "./json/setlists.json";
+
+// Route om gegevens toe te voegen aan de JSON
+app.post("/addSetlist", (req, res) => {
+  const { date, title, songs } = req.body;
+
+  // Lees het bestaande JSON-bestand
+  fs.readFile(setListsPath, "utf8", (err, data) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).json({ error: "Failed to read JSON file." });
+    }
+
+    let setlists = JSON.parse(data);
+
+    // Maak het nieuwe setlistobject
+    const newSetlist = {
+      date: date,
+      title: title,
+      songs: songs,
+    };
+
+    // Voeg het nieuwe nummer toe aan de lijst
+    setlists.push(newSetlist);
+
+    // Schrijf de bijgewerkte lijst terug naar het JSON-bestand
+    fs.writeFile(setListsPath, JSON.stringify(newSetlist, null, 2), (err) => {
+      if (err) {
+        console.error(err);
+        return res.status(500).json({ error: "Failed to write JSON file." });
+      }
+
+      res
+        .status(201)
+        .json({ message: "Setlist added successfully.", setlist: newSetlist });
+    });
+  });
+});
+
 // Start de server
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);

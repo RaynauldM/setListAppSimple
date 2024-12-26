@@ -38,7 +38,7 @@ export function showAllSongs(container) {
       container.innerHTML = "";
       for (const song of data) {
         let newLi = document.createElement("li");
-        newLi.draggable = true;
+
         newLi.className = "songs";
         newLi.innerHTML = song.name;
         container.append(newLi);
@@ -81,6 +81,26 @@ export function updateSong(id, updatedName, updatedArtist) {
     })
     .catch((error) => {
       console.error("Unable to update song:", error);
+      throw error;
+    });
+}
+
+export function addSetList(date, title, songs) {
+  return fetch("http://localhost:3000/addSetlist", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ date, title, songs }),
+  })
+    .then((res) => {
+      if (!res.ok) {
+        throw new Error(`HTTP error! Status: ${res.status}`);
+      }
+      return res.json();
+    })
+    .catch((error) => {
+      console.error("Unable to add setlist:", error);
       throw error;
     });
 }

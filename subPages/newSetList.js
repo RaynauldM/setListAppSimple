@@ -1,12 +1,26 @@
 const mainScreen = document.querySelector("main");
 
-import { showAllSongs } from "../fetch.js";
+import { showAllSongs, addSetList } from "../fetch.js";
+
+let newList = [];
 
 function clearScreen() {
   mainScreen.innerHTML = "";
 }
 
 function pageStart() {
+  function handleSubmit() {
+    if (dateInput.value) {
+      let newDate = dateInput.value;
+      let newTitle;
+      if (titleInput.value) {
+        newTitle = titleInput.value;
+      } else {
+        titleInput = "";
+      }
+      addSetList(newDate, newTitle, newList);
+    }
+  }
   clearScreen();
   const linebreak = document.createElement("br");
   let dateLabel = document.createElement("label");
@@ -18,6 +32,9 @@ function pageStart() {
   let listContainer = document.createElement("div");
   let fullListContainer = document.createElement("ul");
   let newListContainer = document.createElement("ul");
+
+  let submitBtn = document.createElement("button");
+
   dateLabel.for = "dateInput";
   dateLabel.innerHTML = "Datum (verplicht)";
   dateInput.name = "dateInput";
@@ -50,6 +67,12 @@ function pageStart() {
   listContainer.append(newListContainer);
   mainScreen.append(listContainer);
 
+  submitBtn.id = "submitBtn";
+  submitBtn.textContent = "sla op";
+  submitBtn.onclick = handleSubmit;
+
+  mainScreen.append(submitBtn);
+
   let fullListContainerSort = new Sortable(fullListContainer, {
     group: {
       name: "createNew",
@@ -67,6 +90,25 @@ function pageStart() {
     },
     animation: 150,
     removeOnSpill: true,
+    // Prevent duplicates
+    onAdd: function (evt) {
+      const targetList = evt.to; // The target list
+      const newItem = evt.item; // The item being added
+      const newItemText = newItem.textContent.trim();
+
+      // Check for duplicates
+      const isDuplicate = Array.from(targetList.children).some(
+        (child) => child !== newItem && child.textContent.trim() === newItemText
+      );
+
+      if (isDuplicate) {
+        // Remove the duplicate item
+        targetList.removeChild(newItem);
+        console.log("Dit item staat al in de lijst!");
+      } else {
+        newList.push(newItemText);
+      }
+    },
   });
 }
 
