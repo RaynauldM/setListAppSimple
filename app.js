@@ -1,12 +1,11 @@
-const sUl = document.getElementById("setListUl");
+const main = document.getElementById("main");
 const btnPlacement = document.getElementById("btnPlacement");
-
+import { showAllSongs, showSongs } from "./fetch.js";
 // globals
 
 const setList = "./json/setlist.json";
 const workingList = "/json/workingsetlist.json";
 
-import { showAllSongs } from "./fetch.js";
 //button handling
 const btns = btnPlacement.children;
 for (const child of btns) {
@@ -14,12 +13,22 @@ for (const child of btns) {
   child.addEventListener("click", handleClick);
 }
 
+function changeSetlist() {
+  console.log("yo");
+}
+
+function showSetList() {
+  showSongs(main);
+}
+
 function handleClick(event) {
   let btnId = event.target.id;
   switch (btnId) {
-    case "allSongsBtn":
-      showAllSongs(sUl);
+    case "changeSetlistBtn":
+      changeSetlist();
       break;
+    case "setListBtn":
+      showSetList();
   }
 }
 

@@ -49,6 +49,23 @@ export function showAllSongs(container) {
     });
 }
 
+export function showSongs(container) {
+  fetchJSONData("./json/workingsetlist.json")
+    .then((data) => {
+      container.innerHTML = "";
+      for (const song of data) {
+        let newLi = document.createElement("li");
+
+        newLi.className = "songs";
+        newLi.innerHTML = song.name;
+        container.append(newLi);
+      }
+    })
+    .catch((error) => {
+      console.log("foutje", error);
+    });
+}
+
 export function deleteSong(id) {
   return fetch(`http://localhost:3000/deleteSong/${id}`, {
     method: "DELETE",
