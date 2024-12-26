@@ -1,7 +1,6 @@
 const sUl = document.getElementById("setListUl");
 const btnPlacement = document.getElementById("btnPlacement");
 
-import { newSetListPage } from "./subPages/newSetList.js";
 // globals
 
 const setList = "./json/setlist.json";
@@ -21,8 +20,6 @@ function handleClick(event) {
     case "allSongsBtn":
       showAllSongs(sUl);
       break;
-    case "createSetListBtn":
-      newSetListPage();
   }
 }
 

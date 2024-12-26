@@ -84,23 +84,3 @@ export function updateSong(id, updatedName, updatedArtist) {
       throw error;
     });
 }
-
-export function addSetList(date, title, songs) {
-  return fetch("http://localhost:3000/addSetlist", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ date, title, songs }),
-  })
-    .then((res) => {
-      if (!res.ok) {
-        throw new Error(`HTTP error! Status: ${res.status}`);
-      }
-      return res.json();
-    })
-    .catch((error) => {
-      console.error("Unable to add setlist:", error);
-      throw error;
-    });
-}
