@@ -120,4 +120,53 @@ function handleClick(event) {
   }
 }
 
+// WebSocket verbinding
+const socket = new WebSocket("ws://localhost:3000");
+
+socket.onopen = () => {
+  console.log("Verbonden met WebSocket-server.");
+};
+
+socket.onmessage = (event) => {
+  const message = JSON.parse(event.data);
+  if (message.type === "update") {
+    console.log("Update ontvangen:", message.data);
+    // Hier kun je de UI bijwerken, bijvoorbeeld de workingsetlist herladen
+    updateWorkingSetlist(message.data);
+  }
+};
+
+socket.onclose = () => {
+  console.log("WebSocket-verbinding gesloten.");
+};
+
+// Functie om de UI te updaten
+function updateWorkingSetlist(data) {
+  const set1 = document.getElementById("set1");
+  const set2 = document.getElementById("set2");
+  const set3 = document.getElementById("set3");
+
+  set1.innerHTML = "";
+  set2.innerHTML = "";
+  set3.innerHTML = "";
+
+  data.set1.forEach((song) => {
+    const li = document.createElement("li");
+    li.textContent = song;
+    set1.appendChild(li);
+  });
+
+  data.set2.forEach((song) => {
+    const li = document.createElement("li");
+    li.textContent = song;
+    set2.appendChild(li);
+  });
+
+  data.set3.forEach((song) => {
+    const li = document.createElement("li");
+    li.textContent = song;
+    set3.appendChild(li);
+  });
+}
+
 export { setList, workingList };

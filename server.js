@@ -1,7 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const fs = require("fs");
-
+const { WebSocketServer } = require("ws");
 const app = express();
 const PORT = 3000;
 
@@ -12,6 +12,56 @@ const jsonFilePath = "./json/setlist.json";
 
 // Middleware om JSON-gegevens te verwerken
 app.use(express.json());
+
+const server = app.listen(PORT, () => {
+  console.log(`Server is running on http://localhost:${PORT}`);
+});
+
+// WebSocket Server
+const wss = new WebSocketServer({ server });
+
+wss.on("connection", (ws) => {
+  console.log("New WebSocket connection established.");
+
+  // Stuur een bericht naar de client
+  ws.send(JSON.stringify({ message: "Connected to WebSocket server." }));
+
+  // Luister naar berichten van de client
+  ws.on("message", (message) => {
+    console.log("Received:", message);
+  });
+
+  // Verbreek de verbinding
+  ws.on("close", () => {
+    console.log("WebSocket connection closed.");
+  });
+});
+
+// Route om wijzigingen via WebSocket door te sturen
+app.post("/save-workingsetlist", (req, res) => {
+  const data = req.body;
+
+  // Sla het bestand op
+  fs.writeFile(
+    "./json/workingsetlist.json",
+    JSON.stringify(data, null, 2),
+    (err) => {
+      if (err) {
+        console.error("Fout bij opslaan:", err);
+        res.status(500).send("Opslaan mislukt.");
+      } else {
+        // Stuur de update naar alle verbonden WebSocket-clients
+        wss.clients.forEach((client) => {
+          if (client.readyState === client.OPEN) {
+            client.send(JSON.stringify({ type: "update", data }));
+          }
+        });
+
+        res.send("Setlist opgeslagen.");
+      }
+    }
+  );
+});
 
 // Route om gegevens toe te voegen aan de JSON
 app.post("/addSong", (req, res) => {
@@ -137,9 +187,4 @@ app.post("/save-workingsetlist", (req, res) => {
       }
     }
   );
-});
-
-// Start de server
-app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
 });
