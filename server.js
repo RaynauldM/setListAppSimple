@@ -121,6 +121,24 @@ app.put("/updateSong/:id", (req, res) => {
   });
 });
 
+app.post("/save-workingsetlist", (req, res) => {
+  const data = req.body;
+
+  // Sla het bestand op
+  fs.writeFile(
+    "./json/workingsetlist.json",
+    JSON.stringify(data, null, 2),
+    (err) => {
+      if (err) {
+        console.error("Fout bij opslaan:", err);
+        res.status(500).send("Opslaan mislukt.");
+      } else {
+        res.send("Setlist opgeslagen.");
+      }
+    }
+  );
+});
+
 // Start de server
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
