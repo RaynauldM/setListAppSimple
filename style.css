@@ -14,10 +14,6 @@ main {
   margin-top: 0.7em;
 }
 
-.containers {
-  border: solid green 2px;
-}
-
 #adminBtn {
   background-color: red;
 }
