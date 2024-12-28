@@ -188,3 +188,19 @@ app.post("/save-workingsetlist", (req, res) => {
     }
   );
 });
+
+app.post("/update-workingsetlist", (req, res) => {
+  const newSetlist = req.body;
+
+  fs.writeFile(
+    "./json/workingsetlist.json",
+    JSON.stringify(newSetlist, null, 2),
+    (err) => {
+      if (err) {
+        console.error("Fout bij opslaan van workingsetlist:", err);
+        return res.status(500).send("Fout bij opslaan van workingsetlist.");
+      }
+      res.send("Workingsetlist succesvol bijgewerkt!");
+    }
+  );
+});

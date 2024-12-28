@@ -1,3 +1,5 @@
+import { toggleListChange } from "./app.js";
+
 export function fetchJSONData(xSetlist) {
   return fetch(xSetlist)
     .then((res) => {
@@ -54,9 +56,7 @@ export function showSongs(container) {
     .then((data) => {
       container.innerHTML = ""; // Maak de container leeg
 
-      // Itereer over de sets in de JSON (set1, set2, set3)
       for (const [setName, songs] of Object.entries(data)) {
-        // Maak een nieuwe sectie voor elke set
         let setContainer = document.createElement("div");
         let setLabel = document.createElement("p");
         let songList = document.createElement("ul");
@@ -64,21 +64,25 @@ export function showSongs(container) {
         setContainer.className = "setContainer";
         setLabel.className = "setLabel";
         songList.className = "songList";
-        songList.id = setName; // Zorg dat elke lijst een uniek ID krijgt, bv. 'set1'
+        songList.id = setName;
 
-        // Voeg een label toe met de naam van de set
         setLabel.textContent =
-          setName.charAt(0).toUpperCase() + setName.slice(1); // Zet de eerste letter in hoofdletters
+          setName.charAt(0).toUpperCase() + setName.slice(1);
 
-        // Voeg nummers toe aan de lijst
         for (const song of songs) {
           let newLi = document.createElement("li");
           newLi.className = "songs";
-          newLi.textContent = song; // Veronderstel dat het een string is
+          newLi.textContent = song;
           songList.append(newLi);
         }
 
-        // Bouw de sectie op en voeg toe aan de container
+        // Alleen Sortable toepassen als toggleListChange true is
+        if (toggleListChange) {
+          Sortable.create(songList, {
+            group: "shared",
+          });
+        }
+
         setContainer.append(setLabel, songList);
         container.append(setContainer);
       }

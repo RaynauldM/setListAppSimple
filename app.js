@@ -5,6 +5,8 @@ import { showAllSongs, showSongs } from "./fetch.js";
 const setList = "./json/setlist.json";
 const workingList = "/json/workingsetlist.json";
 
+export let toggleListChange = false;
+
 //button handling
 const btns = btnPlacement.children;
 for (const child of btns) {
@@ -12,18 +14,19 @@ for (const child of btns) {
   child.addEventListener("click", handleClick);
 }
 
+document.addEventListener("DOMContentLoaded", () => {
+  showSongs(main);
+});
+
 async function saveSetlist() {
-  // Haal de ul-elementen op
   let set1 = document.getElementById("set1");
   let set2 = document.getElementById("set2");
   let set3 = document.getElementById("set3");
 
-  // Zet de inhoud van de lijsten om in arrays
   let set1Songs = Array.from(set1.children).map((item) => item.textContent);
   let set2Songs = Array.from(set2.children).map((item) => item.textContent);
   let set3Songs = Array.from(set3.children).map((item) => item.textContent);
 
-  // Bouw het JSON-object
   let workingSetlist = {
     set1: set1Songs,
     set2: set2Songs,
@@ -31,15 +34,23 @@ async function saveSetlist() {
   };
 
   try {
-    // Stuur de JSON naar de server
-    await fetch("http://localhost:3000/save-workingsetlist", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(workingSetlist),
-    });
-    alert("Setlist opgeslagen!");
+    // Stuur de bijgewerkte lijst naar de server
+    const response = await fetch(
+      "http://localhost:3000/update-workingsetlist",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(workingSetlist),
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error("Fout bij het updaten van de workingsetlist.");
+    }
+
+    alert("Workingsetlist succesvol opgeslagen!");
   } catch (error) {
     console.error("Fout bij opslaan:", error);
     alert("Opslaan mislukt.");
@@ -117,6 +128,22 @@ function handleClick(event) {
       break;
     case "setListBtn":
       showSetList();
+      break;
+    case "toggle":
+      toggleListChange = !toggleListChange; // Wissel tussen true/false
+      event.target.style.backgroundColor = toggleListChange ? "green" : "red";
+
+      // Alleen Sortable aan- of uitzetten zonder de hele lijst te resetten
+      const songLists = document.querySelectorAll(".songList");
+      songLists.forEach((list) => {
+        if (toggleListChange) {
+          Sortable.create(list, { group: "shared" });
+        } else {
+          // Verwijder bestaande Sortable-instanties
+          Sortable.get(list)?.destroy();
+        }
+      });
+      break;
   }
 }
 
