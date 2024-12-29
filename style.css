@@ -23,3 +23,7 @@ main {
 #setlistContainer {
   display: flex;
 }
+
+#toggle {
+  background-color: red;
+}

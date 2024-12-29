@@ -2,8 +2,8 @@ const main = document.getElementById("main");
 const btnPlacement = document.getElementById("btnPlacement");
 import { showAllSongs, showSongs } from "./fetch.js";
 
-const setList = "./json/setlist.json";
-const workingList = "/json/workingsetlist.json";
+let setList = "./json/setlist.json";
+let workingList = "/json/workingsetlist.json";
 
 export let toggleListChange = false;
 
@@ -14,9 +14,11 @@ for (const child of btns) {
   child.addEventListener("click", handleClick);
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-  showSongs(main);
-});
+if (!window.location.href.includes("admin")) {
+  document.addEventListener("DOMContentLoaded", () => {
+    showSongs(main);
+  });
+}
 
 async function saveSetlist() {
   let set1 = document.getElementById("set1");
