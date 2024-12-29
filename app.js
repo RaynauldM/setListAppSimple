@@ -73,10 +73,10 @@ function changeSetlist() {
   let setLabel3 = document.createElement("p");
 
   // Styling en ID's toewijzen
-  fullLabel.className = "listLabel";
-  setLabel1.className = "listLabel";
-  setLabel2.className = "listLabel";
-  setLabel3.className = "listLabel";
+  fullLabel.className = "setLabel";
+  setLabel1.className = "setLabel";
+  setLabel2.className = "setLabel";
+  setLabel3.className = "setLabel";
   fullLabel.textContent = "Extralist";
   setLabel1.textContent = "Set 1";
   setLabel2.textContent = "Set 2";
@@ -115,7 +115,7 @@ function changeSetlist() {
   saveButton.id = "saveSetlist";
   saveButton.className = "btns";
   saveButton.addEventListener("click", saveSetlist);
-  setlistContainer.append(saveButton);
+  main.append(saveButton);
 }
 
 function showSetList() {
