@@ -6,7 +6,7 @@ let setList = "./json/setlist.json";
 let workingList = "/json/workingsetlist.json";
 
 export let toggleListChange = false;
-
+const placeHolder = "plaats hier";
 //button handling
 const btns = btnPlacement.children;
 for (const child of btns) {
@@ -62,7 +62,7 @@ async function saveSetlist() {
 function changeSetlist() {
   let setlistContainer = document.createElement("div");
   let fsContainer = document.createElement("div");
-  let sContainer = document.createElement("div");
+  let sContainer = document.createElement("ul");
   let fullSetlist = document.createElement("ul");
   let set1 = document.createElement("ul");
   let set2 = document.createElement("ul");
@@ -71,6 +71,9 @@ function changeSetlist() {
   let setLabel1 = document.createElement("p");
   let setLabel2 = document.createElement("p");
   let setLabel3 = document.createElement("p");
+
+  sContainer.id = "sContainer";
+  fsContainer.id = "fsContainer";
 
   // Styling en ID's toewijzen
   fullLabel.className = "setLabel";
@@ -85,6 +88,9 @@ function changeSetlist() {
   setlistContainer.id = "setlistContainer";
   fullSetlist.id = "fullSetlist";
   set1.id = "set1";
+  set1.textContent = placeHolder;
+  set2.textContent = placeHolder;
+  set3.textContent = placeHolder;
   set2.id = "set2";
   set3.id = "set3";
 

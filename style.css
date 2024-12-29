@@ -19,6 +19,11 @@ main {
   text-align: center;
 }
 
+.setContainer {
+  display: flex;
+  flex-direction: column;
+}
+
 #btnPlacement {
   display: flex;
 
@@ -42,7 +47,7 @@ main {
 #setlistContainer {
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: space-around;
 }
 
 #toggle {
@@ -54,20 +59,41 @@ main {
   margin: 2em 0 2em 0;
 }
 
-@media (max-width: 768px) {
-  #btnPlacement,
-  #adminBtnPlacement,
-  #pageBreak {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-  }
-  #btnPlacement {
-    flex-direction: column-reverse;
-  }
+#btnPlacement,
+#adminBtnPlacement,
+#pageBreak {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+#btnPlacement {
+  flex-direction: column-reverse;
+}
 
-  .btns {
-    margin-bottom: 1em;
-  }
+.btns {
+  margin-bottom: 1em;
+}
+
+#setlistContainer {
+  display: flex;
+  justify-content: space-around;
+}
+
+#fsContainer {
+  width: 45%;
+  max-height: 100vh;
+  overflow-y: auto;
+}
+
+#sContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+#set1,
+#set2,
+#set3 {
+  background-color: grey;
 }
