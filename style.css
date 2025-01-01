@@ -68,7 +68,7 @@ main {
   flex-direction: column;
 }
 #btnPlacement {
-  flex-direction: column-reverse;
+  flex-direction: row-reverse;
 }
 
 .btns {

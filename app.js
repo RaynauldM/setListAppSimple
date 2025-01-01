@@ -1,11 +1,11 @@
+const saveBtnContainer = document.getElementById("saveBtnContainer");
 const main = document.getElementById("main");
 const btnPlacement = document.getElementById("btnPlacement");
-import { showAllSongs, showSongs } from "./fetch.js";
+import { showAllSongs, showSongs, showSongsNoSort } from "./fetch.js";
 
 let setList = "./json/setlist.json";
 let workingList = "/json/workingsetlist.json";
 
-export let toggleListChange = false;
 const placeHolder = "plaats hier";
 //button handling
 const btns = btnPlacement.children;
@@ -16,7 +16,7 @@ for (const child of btns) {
 
 if (!window.location.href.includes("admin")) {
   document.addEventListener("DOMContentLoaded", () => {
-    showSongs(main);
+    showSongsNoSort(main);
   });
 }
 
@@ -52,11 +52,23 @@ async function saveSetlist() {
       throw new Error("Fout bij het updaten van de workingsetlist.");
     }
 
-    alert("Workingsetlist succesvol opgeslagen!");
+    console.log("setlist opgeslagen!");
   } catch (error) {
     console.error("Fout bij opslaan:", error);
     alert("Opslaan mislukt.");
   }
+}
+
+function createSaveBtn() {
+  if (document.getElementById("saveSetlist")) {
+    return; // Stop als de knop al bestaat
+  }
+  let saveButton = document.createElement("button");
+  saveButton.textContent = "Opslaan";
+  saveButton.id = "saveSetlist";
+  saveButton.className = "btns";
+  saveButton.addEventListener("click", saveSetlist);
+  saveBtnContainer.append(saveButton);
 }
 
 function changeSetlist() {
@@ -97,15 +109,19 @@ function changeSetlist() {
   // Sortable instellen
   Sortable.create(fullSetlist, {
     group: "changeSetlist",
+    onEnd: () => sendSetlistUpdate(),
   });
   Sortable.create(set1, {
     group: "changeSetlist",
+    onEnd: () => sendSetlistUpdate(),
   });
   Sortable.create(set2, {
     group: "changeSetlist",
+    onEnd: () => sendSetlistUpdate(),
   });
   Sortable.create(set3, {
     group: "changeSetlist",
+    onEnd: () => sendSetlistUpdate(),
   });
 
   // Elementen opbouwen
@@ -115,19 +131,18 @@ function changeSetlist() {
   sContainer.append(setLabel1, set1, setLabel2, set2, setLabel3, set3);
   setlistContainer.append(fsContainer, sContainer);
   main.append(setlistContainer);
-
-  let saveButton = document.createElement("button");
-  saveButton.textContent = "Opslaan";
-  saveButton.id = "saveSetlist";
-  saveButton.className = "btns";
-  saveButton.addEventListener("click", saveSetlist);
-  main.append(saveButton);
+  createSaveBtn();
 }
 
-function showSetList() {
+function updateSetlist() {
+  // Toon de songs in main
   showSongs(main);
-}
 
+  // Controleer of de save-knop al bestaat, anders toevoegen
+  if (!document.getElementById("saveSetlist")) {
+    createSaveBtn();
+  }
+}
 function handleClick(event) {
   let btnId = event.target.id;
   switch (btnId) {
@@ -135,22 +150,10 @@ function handleClick(event) {
       changeSetlist();
       break;
     case "setListBtn":
-      showSetList();
+      showSongsNoSort(main);
       break;
-    case "toggle":
-      toggleListChange = !toggleListChange; // Wissel tussen true/false
-      event.target.style.backgroundColor = toggleListChange ? "green" : "red";
-
-      // Alleen Sortable aan- of uitzetten zonder de hele lijst te resetten
-      const songLists = document.querySelectorAll(".songList");
-      songLists.forEach((list) => {
-        if (toggleListChange) {
-          Sortable.create(list, { group: "shared" });
-        } else {
-          // Verwijder bestaande Sortable-instanties
-          Sortable.get(list)?.destroy();
-        }
-      });
+    case "updateSetlistBtn":
+      updateSetlist();
       break;
   }
 }
@@ -167,7 +170,7 @@ socket.onmessage = (event) => {
   if (message.type === "update") {
     console.log("Update ontvangen:", message.data);
     // Hier kun je de UI bijwerken, bijvoorbeeld de workingsetlist herladen
-    updateWorkingSetlist(message.data);
+    showSongs(main);
   }
 };
 
@@ -202,6 +205,29 @@ function updateWorkingSetlist(data) {
     li.textContent = song;
     set3.appendChild(li);
   });
+}
+
+export function sendSetlistUpdate() {
+  const set1Songs = Array.from(document.getElementById("set1").children).map(
+    (item) => item.textContent
+  );
+  const set2Songs = Array.from(document.getElementById("set2").children).map(
+    (item) => item.textContent
+  );
+  const set3Songs = Array.from(document.getElementById("set3").children).map(
+    (item) => item.textContent
+  );
+
+  const updatedSetlist = {
+    type: "update",
+    data: {
+      set1: set1Songs,
+      set2: set2Songs,
+      set3: set3Songs,
+    },
+  };
+
+  socket.send(JSON.stringify(updatedSetlist));
 }
 
 export { setList, workingList };

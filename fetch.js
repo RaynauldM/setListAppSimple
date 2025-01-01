@@ -1,4 +1,4 @@
-import { toggleListChange } from "./app.js";
+import { sendSetlistUpdate } from "./app.js";
 
 export function fetchJSONData(xSetlist) {
   return fetch(xSetlist)
@@ -76,11 +76,43 @@ export function showSongs(container) {
           songList.append(newLi);
         }
 
-        // Alleen Sortable toepassen als toggleListChange true is
-        if (toggleListChange) {
-          Sortable.create(songList, {
-            group: "shared",
-          });
+        Sortable.create(songList, {
+          group: "shared",
+          onEnd: () => sendSetlistUpdate(),
+        });
+
+        setContainer.append(setLabel, songList);
+        container.append(setContainer);
+      }
+    })
+    .catch((error) => {
+      console.error("Fout bij het laden van de setlijst:", error);
+    });
+}
+
+export function showSongsNoSort(container) {
+  fetchJSONData("./json/workingsetlist.json")
+    .then((data) => {
+      container.innerHTML = ""; // Maak de container leeg
+
+      for (const [setName, songs] of Object.entries(data)) {
+        let setContainer = document.createElement("div");
+        let setLabel = document.createElement("p");
+        let songList = document.createElement("ul");
+
+        setContainer.className = "setContainer";
+        setLabel.className = "setLabel";
+        songList.className = "songList";
+        songList.id = setName;
+
+        setLabel.textContent =
+          setName.charAt(0).toUpperCase() + setName.slice(1);
+
+        for (const song of songs) {
+          let newLi = document.createElement("li");
+          newLi.className = "songs";
+          newLi.textContent = song;
+          songList.append(newLi);
         }
 
         setContainer.append(setLabel, songList);
