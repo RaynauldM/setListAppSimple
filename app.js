@@ -2,7 +2,7 @@ const saveBtnContainer = document.getElementById("saveBtnContainer");
 const main = document.getElementById("main");
 const btnPlacement = document.getElementById("btnPlacement");
 import { showAllSongs, showSongs, showSongsNoSort } from "./fetch.js";
-
+import { PORT } from "./server.js";
 let setList = "./json/setlist.json";
 let workingList = "/json/workingsetlist.json";
 
@@ -194,7 +194,7 @@ function handleClick(event) {
 }
 
 // WebSocket verbinding
-const socket = new WebSocket("ws://localhost:3000");
+const socket = new WebSocket("ws://localhost:", PORT);
 
 socket.onopen = () => {
   console.log("Verbonden met WebSocket-server.");
