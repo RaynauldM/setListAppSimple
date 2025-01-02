@@ -70,7 +70,7 @@ function createSaveBtn() {
   let saveButton = document.createElement("button");
   saveButton.textContent = "Opslaan";
   saveButton.id = "saveSetlist";
-  saveButton.className = "btn btn-outline-warning";
+  saveButton.className = "btn btn-warning";
   saveButton.addEventListener("click", saveSetlist);
   saveBtnContainer.append(saveButton);
 }
@@ -87,6 +87,7 @@ function changeSetlist() {
   sContainer.id = "sContainer";
   fsContainer.id = "fsContainer";
   fsContainer.className = "list-group";
+  sContainer.className = "";
   // Styling en ID's toewijzen
   let fullLabel = document.createElement("p");
   let setLabel1 = document.createElement("p");
@@ -105,11 +106,14 @@ function changeSetlist() {
   fullSetlist.id = "fullSetlist";
 
   set1.id = "set1";
+  set1.className = "";
   set1.textContent = placeHolder;
   set2.textContent = placeHolder;
   set3.textContent = placeHolder;
   set2.id = "set2";
+  set2.className = "";
   set3.id = "set3";
+  set3.className = "";
 
   // Sortable instellen
   Sortable.create(fullSetlist, {
