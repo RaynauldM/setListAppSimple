@@ -1,18 +1,26 @@
+html,
+body {
+  min-height: 100%;
+  overflow-x: hidden;
+}
+
+body {
+  background-color: black;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  min-height: 100vh; /* Disable horizontal scrolling */
+}
+
 main {
   display: flex;
   flex-direction: column;
 }
 
-.btns {
-  background-color: green;
-  height: 12em;
-  width: 10em;
-}
-
 .songs {
-  background-color: grey;
-  border: solid 2px red;
   margin: 0.7em 2em 0 0;
+  text-align: center;
 }
 
 .setLabel {
@@ -50,10 +58,6 @@ main {
   justify-content: space-around;
 }
 
-#toggle {
-  background-color: red;
-}
-
 #pageBreak {
   margin: auto;
   margin: 2em 0 2em 0;
@@ -69,10 +73,7 @@ main {
 }
 #btnPlacement {
   flex-direction: row-reverse;
-}
-
-.btns {
-  margin-bottom: 1em;
+  justify-content: space-around;
 }
 
 #setlistContainer {
@@ -82,18 +83,24 @@ main {
 
 #fsContainer {
   width: 45%;
-  max-height: 100vh;
+  height: auto;
+  max-height: none;
   overflow-y: auto;
 }
 
 #sContainer {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   justify-content: space-around;
+  overflow: auto;
 }
 
-#set1,
-#set2,
-#set3 {
-  background-color: grey;
+#deleteArea {
+  background-color: red;
+  width: 100vw;
+  height: 20vh;
+  display: flex; /* Enable flexbox */
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically */
+  text-align: center; /* Align text inside the <p> element */
 }

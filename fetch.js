@@ -38,10 +38,11 @@ export function showAllSongs(container) {
   fetchJSONData("./json/setlist.json")
     .then((data) => {
       container.innerHTML = "";
+
       for (const song of data) {
         let newLi = document.createElement("li");
 
-        newLi.className = "songs";
+        newLi.className = "songs list-group-item list-group-item-info";
         newLi.innerHTML = song.name;
         container.append(newLi);
       }
@@ -56,6 +57,13 @@ export function showSongs(container) {
     .then((data) => {
       container.innerHTML = ""; // Maak de container leeg
 
+      let deleteArea = document.createElement("div");
+      deleteArea.id = "deleteArea";
+      let deleteP = document.createElement("p");
+      deleteP.id = "deleteP";
+      deleteP.innerText = "Verwijder nummer";
+      deleteArea.append(deleteP);
+
       for (const [setName, songs] of Object.entries(data)) {
         let setContainer = document.createElement("div");
         let setLabel = document.createElement("p");
@@ -63,7 +71,7 @@ export function showSongs(container) {
 
         setContainer.className = "setContainer";
         setLabel.className = "setLabel";
-        songList.className = "songList";
+        songList.className = "songList list-group";
         songList.id = setName;
 
         setLabel.textContent =
@@ -71,18 +79,36 @@ export function showSongs(container) {
 
         for (const song of songs) {
           let newLi = document.createElement("li");
-          newLi.className = "songs";
+          newLi.className = "songs list-group-item list-group-item-light";
           newLi.textContent = song;
           songList.append(newLi);
         }
 
         Sortable.create(songList, {
           group: "shared",
-          onEnd: () => sendSetlistUpdate(),
-        });
+          onEnd: (evt) => {
+            // Call the existing function
 
+            // Check if the item was dropped into the delete area
+            const item = evt.item;
+            const toContainer = evt.to;
+
+            if (toContainer.id == "deleteArea") {
+              // Remove the item from the DOM
+              item.remove();
+              console.log("Item has been deleted!");
+            }
+          },
+        });
+        Sortable.create(deleteArea, {
+          group: "shared",
+          sort: false, // Disable sorting in the delete area
+          onStart(evt) {
+            // Optionally handle the start of the drag if needed
+          },
+        });
         setContainer.append(setLabel, songList);
-        container.append(setContainer);
+        container.append(setContainer, deleteArea);
       }
     })
     .catch((error) => {
@@ -100,9 +126,9 @@ export function showSongsNoSort(container) {
         let setLabel = document.createElement("p");
         let songList = document.createElement("ul");
 
-        setContainer.className = "setContainer";
+        setContainer.className = "setContainer list";
         setLabel.className = "setLabel";
-        songList.className = "songList";
+        songList.className = "songList list-group";
         songList.id = setName;
 
         setLabel.textContent =
@@ -110,7 +136,7 @@ export function showSongsNoSort(container) {
 
         for (const song of songs) {
           let newLi = document.createElement("li");
-          newLi.className = "songs";
+          newLi.className = "songs list-group-item list-group-item-light";
           newLi.textContent = song;
           songList.append(newLi);
         }

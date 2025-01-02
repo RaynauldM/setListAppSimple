@@ -6,7 +6,11 @@ import { showAllSongs, showSongs, showSongsNoSort } from "./fetch.js";
 let setList = "./json/setlist.json";
 let workingList = "/json/workingsetlist.json";
 
-const placeHolder = "plaats hier";
+const btn1 = document.getElementById("changeSetlistBtn");
+const btn2 = document.getElementById("setListBtn");
+const btn3 = document.getElementById("updateSetlistBtn");
+
+const placeHolder = "";
 //button handling
 const btns = btnPlacement.children;
 for (const child of btns) {
@@ -66,7 +70,7 @@ function createSaveBtn() {
   let saveButton = document.createElement("button");
   saveButton.textContent = "Opslaan";
   saveButton.id = "saveSetlist";
-  saveButton.className = "btns";
+  saveButton.className = "btn btn-outline-warning";
   saveButton.addEventListener("click", saveSetlist);
   saveBtnContainer.append(saveButton);
 }
@@ -79,15 +83,15 @@ function changeSetlist() {
   let set1 = document.createElement("ul");
   let set2 = document.createElement("ul");
   let set3 = document.createElement("ul");
+
+  sContainer.id = "sContainer";
+  fsContainer.id = "fsContainer";
+  fsContainer.className = "list-group";
+  // Styling en ID's toewijzen
   let fullLabel = document.createElement("p");
   let setLabel1 = document.createElement("p");
   let setLabel2 = document.createElement("p");
   let setLabel3 = document.createElement("p");
-
-  sContainer.id = "sContainer";
-  fsContainer.id = "fsContainer";
-
-  // Styling en ID's toewijzen
   fullLabel.className = "setLabel";
   setLabel1.className = "setLabel";
   setLabel2.className = "setLabel";
@@ -99,6 +103,7 @@ function changeSetlist() {
 
   setlistContainer.id = "setlistContainer";
   fullSetlist.id = "fullSetlist";
+
   set1.id = "set1";
   set1.textContent = placeHolder;
   set2.textContent = placeHolder;
@@ -134,6 +139,13 @@ function changeSetlist() {
   createSaveBtn();
 }
 
+function goToTop() {
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth",
+  });
+}
+
 function updateSetlist() {
   // Toon de songs in main
   showSongs(main);
@@ -143,17 +155,36 @@ function updateSetlist() {
     createSaveBtn();
   }
 }
+
+function disposeSaveBtn() {
+  saveBtnContainer.innerHTML = "";
+}
 function handleClick(event) {
   let btnId = event.target.id;
   switch (btnId) {
     case "changeSetlistBtn":
+      btn1.disabled = true;
+      btn2.disabled = false;
+
+      btn3.disabled = false;
       changeSetlist();
+      goToTop();
       break;
     case "setListBtn":
+      disposeSaveBtn();
+
       showSongsNoSort(main);
+      goToTop();
+      btn1.disabled = false;
+      btn2.disabled = true;
+      btn3.disabled = false;
       break;
     case "updateSetlistBtn":
       updateSetlist();
+      goToTop();
+      btn1.disabled = false;
+      btn2.disabled = false;
+      btn3.disabled = true;
       break;
   }
 }
