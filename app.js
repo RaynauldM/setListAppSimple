@@ -57,6 +57,8 @@ async function saveSetlist() {
     }
 
     console.log("setlist opgeslagen!");
+    alert("opgeslagen!");
+    ws.send(JSON.stringify({ message: "Update." }));
   } catch (error) {
     console.error("Fout bij opslaan:", error);
     alert("Opslaan mislukt.");
@@ -180,7 +182,7 @@ function handleClick(event) {
       showSongsNoSort(main);
       goToTop();
       btn1.disabled = false;
-      btn2.disabled = true;
+
       btn3.disabled = false;
       break;
     case "updateSetlistBtn":

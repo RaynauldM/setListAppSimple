@@ -3,7 +3,7 @@ const cors = require("cors");
 const fs = require("fs");
 const { WebSocketServer } = require("ws");
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = 3000;
 
 app.use(cors());
 
@@ -12,6 +12,7 @@ const jsonFilePath = "./json/setlist.json";
 
 // Middleware om JSON-gegevens te verwerken
 app.use(express.json());
+app.use(express.static(__dirname));
 
 const server = app.listen(PORT, "0.0.0.0", () => {
   console.log(`Server is running on http://localhost:${PORT}`);
